@@ -29,6 +29,8 @@ if(os.getenv('DB_MIGRATE')):
     new_migration.down()
 
 #define controller
+db = db.connect()
+db.database = os.getenv("DB_NAME")
 new_user_controller = user_controller(db)
 
 #secret key

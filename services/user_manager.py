@@ -1,4 +1,5 @@
 
+import hashlib
 from flask import request, session
 
 class login:
@@ -8,34 +9,41 @@ class login:
 
   password=""
 
+  user=None
+
   def __init__(self,db):
     self.db = db
   
   def validate(self):
-    pass
-
-  def get_user_data(self):
     payload = {"username": self.username, "is_login": True, "msg": False}
-    if(self.username != "admin"):
-      payload['msg'] = "Username / Password salah"
-      payload['is_login'] = False
+    if self.user == None:
+      payload['is_login']=False
+      payload['msg']="Username / Password salah"
+    
     return payload
+  
+  def get_user_data(self):
+    user_cursor = self.db.cursor(dictionary=True)
+    user_cursor.execute("SELECT * FROM users WHERE username='{}' and password='{}'".format(self.username, self.password));
+    user = user_cursor.fetchone()
+    self.user=user
+    return user
   
   def auth(self):
     self.username = request.form['username']
-    self.password = request.form['password']
+    self.password = hashlib.sha1(request.form['password'].encode()).hexdigest()
     
+    self.get_user_data()
+
     # validasi input
-    self.validate()
+    validate = self.validate()
 
     #dapatkan data user
-    user_data = self.get_user_data()
-    if(user_data['is_login']):
-      #membuat session
-      session['token'] = user_data
-    
-    return user_data
-pass
+    if validate['is_login']:
+      session['token'] = self.user
+
+    return validate
+pass  
 
 class logout:
   def destroy_token():

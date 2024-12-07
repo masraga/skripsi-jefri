@@ -35,9 +35,7 @@
             <div class="body">
                 <form id="sign_in" action="/" method="POST">
                     <div class="msg">Masuk sebagai admin</div>
-                    {% if error %}
-                        <div class="msg col-pink">{{error}}</div>
-                    {% endif %}
+                    {% include 'inc/alert.html' %}
                     <input type="hidden" name="process" value="true">
                     <div class="input-group">
                         <span class="input-group-addon">

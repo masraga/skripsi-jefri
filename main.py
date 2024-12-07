@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from configs.database import database, migration, init_data
 
 from controllers.user_controller import user_controller
+from controllers.admin_controller import admin_controller
 
 #load env
 load_dotenv()
@@ -32,6 +33,7 @@ if(os.getenv('DB_MIGRATE')):
 db = db.connect()
 db.database = os.getenv("DB_NAME")
 new_user_controller = user_controller(db)
+new_admin_controller = admin_controller(db)
 
 #secret key
 app_secret = secrets.token_urlsafe(16)
@@ -47,3 +49,15 @@ def login():
 @app.route("/logout", methods=['GET', 'POST'])
 def logout():
   return new_user_controller.logout()
+
+@app.route("/admin/dashboard", methods=['GET'])
+def dashboard():
+  return new_admin_controller.dashboard()
+
+@app.route("/admin/user", methods=['GET'])
+def user():
+  return new_admin_controller.user()
+
+@app.route("/admin/user/new_user", methods=['GET'])
+def new_user():
+  return new_admin_controller.user("add")

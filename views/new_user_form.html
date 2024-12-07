@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block page_title %}TAMBAH PENGGUNA BARU{%endblock%}
+{% block content %}
+<div class="card">
+  <div class="body">
+    <form action="">
+      <div class="input-group">
+        <span class="input-group-addon">
+            <i class="material-icons">person</i>
+        </span>
+        <div class="form-line">
+            <input type="text" name="username" class="form-control" name="username" placeholder="Username" required autofocus>
+        </div>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon">
+            <i class="material-icons">photo</i>
+        </span>
+        <div class="form-line">
+          <input type="file" name="face[]" multiple class="form-control" accept="image/*">
+        </div>
+      </div>
+      <button class="btn btn-danger btn-sm">SIMPAN</button>
+    </form>
+  </div>
+</div>
+{%endblock%}

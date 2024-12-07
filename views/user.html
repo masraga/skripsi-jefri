@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+{% block page_title %}DATA PENGGUNA{% endblock %}
+{% block content %}
+
+<div class="card">
+  <div class="body">
+    <a href="/admin/user/new_user" class="btn btn-danger btn-sm">TAMBAH PENGGUNA BARU</a>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Username</th>
+          <th>Kelamin</th>
+          <th>Face Id</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Raga</td>
+          <td>Pria</td>
+          <td>1234</td>
+          <td>
+            <a href="" class="badge bg-green badge-sm">detail</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

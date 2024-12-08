@@ -1,5 +1,6 @@
 from flask import request, flash, render_template, request, redirect, session
 from services.user_manager import user as user_service
+from helpers.auth_helper import is_auth_admin, redirect_admin_login
 
 class admin_controller:
   
@@ -9,9 +10,11 @@ class admin_controller:
     self.db = db
 
   def dashboard(self):
+    if not is_auth_admin(): return redirect_admin_login()
     return render_template("index.html")
 
   def user(self, path=None):
+    if not is_auth_admin(): return redirect_admin_login() 
     if path == None:
       return render_template("user.html")
     else:

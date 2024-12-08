@@ -41,7 +41,7 @@ class login:
 
     #dapatkan data user
     if validate['is_login']:
-      session['token'] = self.user
+      session['token'] = validate
 
     return validate
 pass  

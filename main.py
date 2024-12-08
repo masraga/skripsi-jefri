@@ -41,6 +41,7 @@ app_secret = secrets.token_urlsafe(16)
 # define route
 app = Flask(__name__, template_folder=os.path.abspath("views"), static_folder=os.path.abspath("public"))
 app.secret_key = app_secret
+app.config['UPLOAD_FOLDER'] = "public/upload"
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
@@ -61,3 +62,7 @@ def user():
 @app.route("/admin/user/new_user", methods=['GET'])
 def new_user():
   return new_admin_controller.user("add")
+
+@app.route("/admin/user/save_user", methods=['POST'])
+def save_user():
+  return new_admin_controller.user("save")

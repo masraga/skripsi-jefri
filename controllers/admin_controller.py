@@ -1,4 +1,5 @@
-from flask import request, flash, render_template, request
+from flask import request, flash, render_template, request, redirect
+from services.user_manager import user as user_service
 
 class admin_controller:
   
@@ -16,3 +17,11 @@ class admin_controller:
     else:
       if path == "add":
         return render_template("new_user_form.html")
+      elif path == 'save':
+        faces = request.files.getlist('face[]')
+        face_list = []
+        for face in faces:
+          face_list.append(face)
+        req_user = user_service(self.db, request.form["username"], face_list).create()
+        flash(req_user['msg'], req_user['msg_type'])
+        return redirect("/admin/user/new_user")

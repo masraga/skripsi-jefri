@@ -1,6 +1,6 @@
 
 import hashlib
-from flask import request, session
+from flask import request, session, url_for
 
 class login:
   db=None
@@ -49,3 +49,42 @@ class logout:
   def destroy_token():
     session.pop('token', None)
     return True
+  
+class user:
+  db=None
+
+  username=""
+
+  images=[]
+
+  allowed_file = ["jpg", "jpeg", "png"]
+
+  def __init__(self, db, username, images):
+    self.db = db
+    self.username = username
+    self.images = images
+    return
+  
+  def validation(self):
+    # validasi gambar
+    return {"is_error": False,  "msg": ""}
+  
+  def set_payload(self):
+    payload = {"username": self.username, "faces": []}
+    for index in range(len(self.images)):
+      ext = self.images[index].filename.split(".")[1]
+      filename = f'{self.username}-{index}.{ext}'
+      payload["faces"].append(filename)
+      self.images[index].save(f'public/upload/{filename}')
+    
+    return payload
+
+  def create(self):
+    self.validation()
+    if(self.validation()['is_error']):
+      return self.validation()
+    
+    payload = self.set_payload()
+
+    result = {"is_error": False, "msg": "Data user berhasil disimpan", "msg_type": "success"}
+    return result

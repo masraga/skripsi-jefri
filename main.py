@@ -22,12 +22,12 @@ db = database(
 if(os.getenv('DB_MIGRATE')):
   new_migration = migration(db.connect())
   new_init_data = init_data(db.connect())
-  # new_migration.up() if os.getenv('DB_MIGRATE_TYPE') == "up" else new_migration.down()
   if os.getenv('DB_MIGRATE_TYPE') == "up":
     new_migration.up()
     new_init_data.run()
   else:
     new_migration.down()
+  
 
 #define controller
 db = db.connect()

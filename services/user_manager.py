@@ -1,6 +1,7 @@
 
-import hashlib
+import hashlib, random, string
 from flask import request, session, url_for
+from repositories.guest_repo import guest_repo
 
 class login:
   db=None
@@ -57,12 +58,15 @@ class user:
 
   images=[]
 
-  allowed_file = ["jpg", "jpeg", "png"]
+  allowed_file=["jpg", "jpeg", "png"]
+
+  guest_repo=None
 
   def __init__(self, db, username, images):
     self.db = db
     self.username = username
     self.images = images
+    self.guest_repo=guest_repo(db)
     return
   
   def validation(self):
@@ -70,10 +74,11 @@ class user:
     return {"is_error": False,  "msg": ""}
   
   def set_payload(self):
-    payload = {"username": self.username, "faces": []}
+    face_id=''.join(random.choices(string.ascii_letters,k=7))
+    payload = {"username": self.username, "faces": [], "face_id": face_id}
     for index in range(len(self.images)):
       ext = self.images[index].filename.split(".")[1]
-      filename = f'{self.username}-{index}.{ext}'
+      filename = f'{face_id}-{index}.{ext}'
       payload["faces"].append(filename)
       self.images[index].save(f'public/upload/{filename}')
     
@@ -85,6 +90,7 @@ class user:
       return self.validation()
     
     payload = self.set_payload()
+    self.guest_repo.create(payload["username"], payload["faces"], payload['face_id'])    
 
     result = {"is_error": False, "msg": "Data user berhasil disimpan", "msg_type": "success"}
     return result

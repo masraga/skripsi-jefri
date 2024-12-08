@@ -1,4 +1,4 @@
-from flask import request, flash, render_template, request, redirect
+from flask import request, flash, render_template, request, redirect, session
 from services.user_manager import user as user_service
 
 class admin_controller:

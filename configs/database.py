@@ -46,30 +46,37 @@ class migration:
 
   def __init__(self, db):
     self.db = db
-    self.connector = db.cursor()
     self.check_db()
     pass
 
   def check_db(self):
-    return self.connector.execute("CREATE DATABASE IF NOT EXISTS {}".format(os.getenv('DB_NAME')))
+    cursor = self.db.cursor()
+    cursor.execute("CREATE DATABASE IF NOT EXISTS {}".format(os.getenv('DB_NAME')))
+    self.db.commit()
+    return True
 
   def up(self):
     self.db.database = os.getenv('DB_NAME')
-    query = {
-      self.user_table()['up']
-    }
-    for q in query: 
-      self.db.cursor().execute(q)
-    pass
+    cursor = self.db.cursor(buffered=True)
+    query = [
+      self.user_table()['up'],
+      self.guest_table()['up'],
+      self.guest_face_table()['up'],
+    ]
+    for q in query:
+      cursor.execute(q)
+      self.db.commit()
 
   def down(self):
     self.db.database = os.getenv('DB_NAME')
     query = {
-      self.user_table()['down']
+      self.user_table()['down'],
+      self.guest_table()['down'],
+      self.guest_face_table()['down']
     }
     for q in query:
       self.db.cursor().execute(q)
-    pass
+    self.db.commit()
 
   def user_table(self):
     up = "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255), password VARCHAR(255), is_active TINYINT(1))"
@@ -77,6 +84,36 @@ class migration:
     return {"up": up, "down": down}
   pass
 
+  def guest_table(self):
+    up = """
+      CREATE TABLE IF NOT EXISTS guests (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255),
+        face_id VARCHAR(255),
+        is_active TINYINT DEFAULT 1
+      )
+    """
+
+    down = """
+      DROP TABLE IF EXISTS guests;
+    """
+    return {"up": up, "down": down}
+
+  def guest_face_table(self):
+    up = """
+      CREATE TABLE IF NOT EXISTS guest_faces (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        guest_id INT,
+        face VARCHAR(255),
+        is_active TINYINT DEFAULT 1
+      );
+    """
+
+    down = """
+      DROP TABLE IF EXISTS guest_faces;
+    """
+    return {"up": up, "down": down}
+  
 class init_data:
   db = None
   def __init__(self, db):

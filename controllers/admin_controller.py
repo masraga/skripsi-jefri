@@ -33,6 +33,7 @@ class admin_controller:
         return redirect("/admin/user/new_user")
       elif path == 'detail':
         guest_id=request.args.get("id")
+        guest=guest_service.get_list_guest({"id": guest_id})
+        guest=guest[0]
         faces=guest_service.get_list_face({"guest_id": guest_id})
-        print(faces)
-        return "Tampilkan detaul"
+        return render_template("user_detail.html", faces=faces, guest=guest)

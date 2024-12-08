@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% block page_title %}DATA PENGGUNA{% endblock %}
+{% block content %}
+
+<div class="card">
+  <div class="body">
+    <div class="row">
+      <div class="col-md-3">
+        <img class="responsive img-responsive" src="{{url_for('static', filename='upload/')}}{{faces[0]['face']}}" alt="">
+      </div>
+      <div class="col-md-8">
+        <table class="table" border="1">
+          <thead>
+            <tr>
+              <td width="20%"><b>Nama</b></td>
+              <td width="80%">{{guest['name']}}</td>
+            </tr>
+            <tr>
+              <td width="20%"><b>Face Id</b></td>
+              <td width="80%">{{guest['face_id']}}</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="body">
+    <p>HISTORY PENGGUNAAN</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Tanggal</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -77,7 +77,7 @@ class user:
     face_id=''.join(random.choices(string.ascii_letters,k=7))
     payload = {"username": self.username, "faces": [], "face_id": face_id}
     for index in range(len(self.images)):
-      ext = self.images[index].filename.split(".")[1]
+      ext = self.images[index].filename.rsplit(".", 1)[1]
       filename = f'{face_id}-{index}.{ext}'
       payload["faces"].append(filename)
       self.images[index].save(f'public/upload/{filename}')

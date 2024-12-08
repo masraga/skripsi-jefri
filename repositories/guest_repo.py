@@ -29,4 +29,28 @@ class guest_repo:
       self.db.commit()
 
     return True
+
+  def get_list(self, params={}):
+    cursor = self.db.cursor(dictionary=True)
+    query ="SELECT * FROM guests"
+    if len(params) > 0:
+      query += " WHERE "
+      if 'id' in params:
+        query += f"id={params['id']}"
     
+    cursor.execute(query)
+    result = cursor.fetchall()
+    self.db.commit()
+    # self.db.close()
+    return result
+  
+  def get_list_face(self, params={}):
+    cursor=self.db.cursor(dictionary=True)
+    query="SELECT * FROM guest_faces"
+    if len(params) > 0:
+      query += " WHERE "
+      if 'guest_id' in params:
+        query += f"guest_id={params['guest_id']}"
+    cursor.execute(query)
+    result=cursor.fetchall()
+    return result

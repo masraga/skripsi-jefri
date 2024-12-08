@@ -66,3 +66,7 @@ def new_user():
 @app.route("/admin/user/save_user", methods=['POST'])
 def save_user():
   return new_admin_controller.user("save")
+
+@app.route("/admin/user/detail", methods=['GET'])
+def user_detail():
+  return new_admin_controller.user("detail")

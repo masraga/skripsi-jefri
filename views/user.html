@@ -8,7 +8,6 @@
     <table class="table">
       <thead>
         <tr>
-          <th>No</th>
           <th>Username</th>
           <th>Kelamin</th>
           <th>Face Id</th>
@@ -16,15 +15,16 @@
         </tr>
       </thead>
       <tbody>
+        {% for guest in guest_list %}
         <tr>
-          <td>1</td>
-          <td>Raga</td>
+          <td>{{guest['name']}}</td>
           <td>Pria</td>
-          <td>1234</td>
+          <td>{{guest['face_id']}}</td>
           <td>
-            <a href="" class="badge bg-green badge-sm">detail</a>
+            <a href="/admin/user/detail?id={{guest['id']}}" class="badge bg-green badge-sm">detail</a>
           </td>
         </tr>
+      {% endfor %}
       </tbody>
     </table>
   </div>

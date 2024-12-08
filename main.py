@@ -3,6 +3,7 @@ from flask import Flask
 from dotenv import load_dotenv
 
 from configs.database import database, migration, init_data
+from configs.upload_file import upload_file
 
 from controllers.user_controller import user_controller
 from controllers.admin_controller import admin_controller
@@ -27,7 +28,10 @@ if(os.getenv('DB_MIGRATE')):
     new_init_data.run()
   else:
     new_migration.down()
-  
+
+#define lib
+new_upload_file = upload_file()
+new_upload_file.run()
 
 #define controller
 db = db.connect()

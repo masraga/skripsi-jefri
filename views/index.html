@@ -1,2 +1,32 @@
 ﻿{% extends "base.html" %}
 {% block page_title %}DASHBOARD{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="body">
+    <canvas id="bar_chart" height="150"></canvas>
+  </div>
+</div>
+<script src="{{url_for('static', filename='plugins/chartjs/Chart.bundle.js')}}"></script>
+<script>
+  new Chart(document.getElementById("bar_chart").getContext("2d"), config = {
+      type: 'bar',
+      data: {
+          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          datasets: [{
+              label: "My First dataset",
+              data: [65, 59, 80, 81, 56, 55, 40],
+              backgroundColor: 'rgba(0, 188, 212, 0.8)'
+          }, {
+                  label: "My Second dataset",
+                  data: [28, 48, 40, 19, 86, 27, 90],
+                  backgroundColor: 'rgba(233, 30, 99, 0.8)'
+              }]
+      },
+      options: {
+          responsive: true,
+          legend: false
+      }
+  });
+</script>
+{% endblock %}

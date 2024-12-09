@@ -55,3 +55,18 @@ class guest_repo:
     cursor.execute(query)
     result=cursor.fetchall()
     return result
+  
+  def get_yearly_user_total(self):
+    cursor=self.db.cursor(dictionary=True)
+    query="""
+      SELECT 
+        concat(year(created_at),"-",month(created_at)) as month_year, 
+        sum(1) as total
+      FROM 
+        guests 
+      GROUP BY month_year
+      ORDER BY created_at ASC
+    """
+    cursor.execute(query)
+    result=cursor.fetchall()
+    return result

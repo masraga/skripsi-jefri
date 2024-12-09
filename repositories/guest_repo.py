@@ -1,3 +1,4 @@
+from datetime import date
 class guest_repo:
 
   guest_table="guests"
@@ -13,11 +14,11 @@ class guest_repo:
   def __init__(self, db):
     self.db = db
   
-  def create(self, username, faces, face_id):
+  def create(self, username, faces, face_id, gender):
     cursor = self.db.cursor()
     
-    guest_sql = "INSERT INTO guests (name, is_active, face_id) VALUES ( %s, %s, %s )"
-    guest_val = (username, "1", face_id)
+    guest_sql = "INSERT INTO guests (name, is_active, face_id, created_at, gender) VALUES ( %s, %s, %s, %s, %s )"
+    guest_val = (username, "1", face_id, date.today(),gender)
     cursor.execute(guest_sql, guest_val)
     self.db.commit()
     guest_id = cursor.lastrowid

@@ -18,7 +18,7 @@
         {% for guest in guest_list %}
         <tr>
           <td>{{guest['name']}}</td>
-          <td>Pria</td>
+          <td>{{"laki-laki" if guest['gender'] == 0 else "perempuan"}}</td>
           <td>{{guest['face_id']}}</td>
           <td>
             <a href="/admin/user/detail?id={{guest['id']}}" class="badge bg-green badge-sm">detail</a>

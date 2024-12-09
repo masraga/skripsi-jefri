@@ -90,7 +90,9 @@ class migration:
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255),
         face_id VARCHAR(255),
-        is_active TINYINT DEFAULT 1
+        is_active TINYINT DEFAULT "1",
+        created_at DATETIME,
+        gender TINYINT
       )
     """
 

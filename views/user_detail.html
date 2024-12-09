@@ -16,6 +16,10 @@
               <td width="80%">{{guest['name']}}</td>
             </tr>
             <tr>
+              <td width="20%"><b>Kelamin</b></td>
+              <td width="80%">{{"laki-laki" if guest['gender'] == 0 else "perempuan"}}</td>
+            </tr>
+            <tr>
               <td width="20%"><b>Face Id</b></td>
               <td width="80%">{{guest['face_id']}}</td>
             </tr>

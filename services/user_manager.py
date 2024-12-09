@@ -58,14 +58,17 @@ class user:
 
   images=[]
 
+  gender=""
+
   allowed_file=["jpg", "jpeg", "png"]
 
   guest_repo=None
 
-  def __init__(self, db, username, images):
+  def __init__(self, db, username, images, gender):
     self.db = db
     self.username = username
     self.images = images
+    self.gender=gender
     self.guest_repo=guest_repo(db)
     return
   
@@ -75,7 +78,7 @@ class user:
   
   def set_payload(self):
     face_id=''.join(random.choices(string.ascii_letters,k=7))
-    payload = {"username": self.username, "faces": [], "face_id": face_id}
+    payload = {"username": self.username, "faces": [], "face_id": face_id, "gender": self.gender}
     for index in range(len(self.images)):
       ext = self.images[index].filename.rsplit(".", 1)[1]
       filename = f'{face_id}-{index}.{ext}'
@@ -90,7 +93,7 @@ class user:
       return self.validation()
     
     payload = self.set_payload()
-    self.guest_repo.create(payload["username"], payload["faces"], payload['face_id'])    
+    self.guest_repo.create(payload["username"], payload["faces"], payload['face_id'], payload['gender'])    
 
     result = {"is_error": False, "msg": "Data user berhasil disimpan", "msg_type": "success"}
     return result

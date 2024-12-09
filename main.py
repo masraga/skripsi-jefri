@@ -74,3 +74,7 @@ def save_user():
 @app.route("/admin/user/detail", methods=['GET'])
 def user_detail():
   return new_admin_controller.user("detail")
+
+@app.route("/guest/login", methods=['GET'])
+def guest_login():
+  return new_user_controller.guest_login()

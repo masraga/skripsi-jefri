@@ -29,3 +29,6 @@ class user_controller:
   def logout(self):
     logout_service.destroy_token()
     return render_template('sign-in.html')
+  
+  def guest_login(self):
+    return render_template('sign_in_guest.html')

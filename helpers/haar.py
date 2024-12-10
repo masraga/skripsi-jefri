@@ -24,9 +24,11 @@ class crop_image:
 
     image_file=os.path.join(self.image_path, image)
     face_img=cv2.imread(image_file)
-    face_rect = cascade.detectMultiScale(face_img, scaleFactor = 1.2, minNeighbors = 5)
-    for (x, y, w, h) in face_rect:
-      face_img = face_img[y:y+h, x:x+w]
+    face_img=cv2.cvtColor(face_img, cv2.COLOR_BGR2GRAY)
+    detected_faces = cascade.detectMultiScale(face_img, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+    if len(detected_faces) > 0:
+      face_img = face_img[detected_faces[0][1]:detected_faces[0][1] + detected_faces[0][3],
+      detected_faces[0][0]:detected_faces[0][0] + detected_faces[0][2]]
 
     return face_img
 

@@ -2,6 +2,7 @@
 import hashlib, random, string
 from flask import request, session, url_for
 from repositories.guest_repo import guest_repo
+from helpers.haar import crop_image
 
 class login:
   db=None
@@ -94,6 +95,9 @@ class user:
     
     payload = self.set_payload()
     self.guest_repo.create(payload["username"], payload["faces"], payload['face_id'], payload['gender'])    
+
+    # crop gambar untuk mendapatkan data wajah
+    crop_image()
 
     result = {"is_error": False, "msg": "Data user berhasil disimpan", "msg_type": "success"}
     return result

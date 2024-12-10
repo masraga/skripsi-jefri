@@ -12,7 +12,6 @@
   const chartEl = document.getElementById("bar_chart");
   const label = JSON.parse('{{ label | tojson}}')
   const value = JSON.parse('{{ value | tojson}}')
-  console.log(value)
   new Chart(chartEl.getContext("2d"), config = {
       type: 'bar',
       data: {

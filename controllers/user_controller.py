@@ -1,4 +1,5 @@
 from flask import request, render_template, session, redirect, flash
+from services.guest_info import guest_info
 from services.user_manager import (
   login as login_service,
   logout as logout_service
@@ -21,7 +22,9 @@ class user_controller:
     else:
       auth = self.login_service.auth()
       if(auth['is_login']):
-        return render_template('index.html')
+        guest_service=guest_info(self.db)
+        overview=guest_service.get_yearly_user_total()
+        return render_template('index.html', label=overview['label'], value=overview['value'])
       else:
         flash(auth['msg'], 'danger')
         return redirect("/")

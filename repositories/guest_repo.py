@@ -38,6 +38,8 @@ class guest_repo:
       query += " WHERE "
       if 'id' in params:
         query += f"id={params['id']}"
+      if 'face_id' in params:
+        query += f"face_id='{params['face_id']}'"
     
     cursor.execute(query)
     result = cursor.fetchall()

@@ -9,9 +9,9 @@
   </style>
   <div class="image">
     <div class="container">
-      <img src="public/upload/TdQmfbJ-5.jpg" alt="" class="img-responsive responsive">
+      <img src="{{session['guest_token']['face']}}" alt="" class="img-responsive responsive">
     </div>
   </div>
   <br>
-  <h3 class="text-center center">Raga mulia kusuma</h3>
+  <h3 class="text-center center">{{session['guest_token']['name']}}</h3>
 {% endblock %}

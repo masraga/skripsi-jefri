@@ -34,10 +34,11 @@
       transform: scaleX(-1);
     }
     body {
-      height: 100vh;
+      height: 100vh !important;
       display: flex;
       justify-content: center;
       align-items: center;
+      align-content: center;
     }
     .button {
       display: flex;
@@ -47,21 +48,23 @@
 </head>
 
 <body>
-  <div class="login-box">
-    <div class="logo">
+  <div class="login-box" style="display: flex;">
+    <!-- <div class="logo">
       <a href="javascript:void(0);">Face<b>Recognize</b></a>
       <small>Absensi pengenalan wajah</small>
-    </div>
+    </div> -->
     <div class="card">
       <div class="body">
-        <video id="videoElement" style="max-width: 100%;" autoplay></video>
-        <img id="photoElement">
-        <div class="button">
-          <div>
-            <button id="captureButton" class="btn"><i class="material-icons">camera_alt</i></button>
+        <div>
+          <video id="videoElement" style="max-width: 100%;" autoplay></video>
+          <img id="photoElement">
+          <div class="button">
+            <div>
+              <button id="captureButton" class="btn"><i class="material-icons">camera_alt</i></button>
+            </div>
           </div>
+          <canvas id="canvasElement" style="display: none;"></canvas>
         </div>
-        <canvas id="canvasElement" style="display: none;"></canvas>
       </div>
     </div>
     <br><br><br><br>

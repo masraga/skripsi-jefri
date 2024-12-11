@@ -40,9 +40,21 @@ class user_controller:
       return render_template('sign_in_guest.html')
     else: 
       upload_path="public/attempt"
+      face_path="public/upload"
       face=request.files.getlist("face")[0]
       filename=os.path.join(upload_path, face.filename)
       face.save(filename)
       predict=face_predict(filename)
       os.remove(filename)
+      if predict["is_error"] is not True:
+        guest_service=guest_info(self.db)
+        guest=guest_service.get_list_guest({"face_id": predict['face_id']})
+        guest=guest[0]
+        face_list=guest_service.get_list_face(params={"guest_id": guest["id"]})
+        face=face_list[0]
+        session["guest_token"]={
+          "name": guest['name'],
+          "face": os.path.join(face_path, face["face"]),
+          "accuracy": predict["accuracy"]
+        }
       return jsonify(predict)

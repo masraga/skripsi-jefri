@@ -1,4 +1,6 @@
-from flask import request, render_template, session, redirect, flash
+import os
+from flask import request, render_template, session, redirect, flash, jsonify
+from helpers.lbp import face_predict
 from services.guest_info import guest_info
 from services.user_manager import (
   login as login_service,
@@ -34,4 +36,13 @@ class user_controller:
     return render_template('sign-in.html')
   
   def guest_login(self):
-    return render_template('sign_in_guest.html')
+    if len(request.files.getlist('face')) == 0:
+      return render_template('sign_in_guest.html')
+    else: 
+      upload_path="public/attempt"
+      face=request.files.getlist("face")[0]
+      filename=os.path.join(upload_path, face.filename)
+      face.save(filename)
+      predict=face_predict(filename)
+      os.remove(filename)
+      return jsonify(predict)

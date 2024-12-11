@@ -6,7 +6,7 @@ face_path="public/faces"
 label={}
 label_name={}
 
-min_percentage=87 #minimal persentase kemiripan
+min_percentage=40 #minimal persentase kemiripan
 
 #membuat database wajah / peluang kemiripan data wajah
 def train_model(is_train=False):
@@ -21,7 +21,6 @@ def train_model(is_train=False):
       face_index+=1
   
   label_name = {value: key for key, value in label.items()}
-  print(label_name)
 
   print("[log] map image to label")
   for image in os.listdir(face_path):
@@ -38,7 +37,7 @@ def train_model(is_train=False):
     recognizer.save('helpers/trained_model.xml')
   else:
     recognizer.read('helpers/trained_model.xml')
-  return recognizer
+  return {"recognizer": recognizer, "label_name": label_name}
 
 #memprediksi wajah
 def face_predict(face):
@@ -49,7 +48,7 @@ def face_predict(face):
 
   # Recognize and label the faces
   if len(faces) > 0:
-    label, conf= recognizer.predict(gray[faces[0][1]:faces[0][1] + faces[0][3],faces[0][0]:faces[0][0] + faces[0][2]])
+    label, conf= recognizer["recognizer"].predict(gray[faces[0][1]:faces[0][1] + faces[0][3],faces[0][0]:faces[0][0] + faces[0][2]])
     
     #confidence bukan menampilkan persentase kemiripan melainkan sebaliknya
     #semkain kecil valuenyanya berarti gambar semakin mendekati dengan kemiripan
@@ -57,7 +56,8 @@ def face_predict(face):
     #ref: https://answers.opencv.org/question/226714/confidence-value-in-lbph/
     conf=100-conf 
     is_error=True
-    is_error=conf >= min_percentage
-    return {"face_id": label_name[label], "accuracy": conf, "is_error": is_error}
+    is_error=conf < min_percentage
+    print(label_name)
+    return {"face_id": recognizer["label_name"][label], "accuracy": conf, "is_error": is_error}
   else:
     return False

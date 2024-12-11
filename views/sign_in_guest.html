@@ -29,6 +29,10 @@
       -webkit-transform: scaleX(-1);
       transform: scaleX(-1);
     }
+    #photoElement {
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+    }
     body {
       height: 100vh;
       display: flex;
@@ -51,6 +55,7 @@
     <div class="card">
       <div class="body">
         <video id="videoElement" style="max-width: 100%;" autoplay></video>
+        <img id="photoElement">
         <div class="button">
           <div>
             <button id="captureButton" class="btn"><i class="material-icons">camera_alt</i></button>
@@ -59,6 +64,12 @@
         <canvas id="canvasElement" style="display: none;"></canvas>
       </div>
     </div>
+    <br><br><br><br>
+    <br><br><br><br>
+    <br><br><br><br>
+    <br><br><br><br>
+    <br><br><br><br>
+    <br><br><br><br>
   </div>
 
   <!-- Jquery Core Js -->
@@ -76,12 +87,12 @@
   <!-- Custom Js -->
   <script src="{{url_for('static', filename='js/admin.js')}}"></script>
   <script src="{{url_for('static', filename='js/pages/examples/sign-in.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <script>
     const videoElement = document.getElementById('videoElement');
     const canvasElement = document.getElementById('canvasElement');
     const photoElement = document.getElementById('photoElement');
-    const startButton = document.getElementById('startButton');
     const captureButton = document.getElementById('captureButton');
 
     let stream;
@@ -90,7 +101,6 @@
         try {
             stream = await navigator.mediaDevices.getUserMedia({ video: true });
             videoElement.srcObject = stream;
-            startButton.disabled = true;
             captureButton.disabled = false;
         } catch (error) {
             console.error('Error accessing webcam:', error);
@@ -99,13 +109,45 @@
 
     window.addEventListener('load', startWebcam)
 
-    function capturePhoto() {
-        canvasElement.width = videoElement.videoWidth;
-        canvasElement.height = videoElement.videoHeight;
-        canvasElement.getContext('2d').drawImage(videoElement, 0, 0);
-        const photoDataUrl = canvasElement.toDataURL('image/jpeg');
-        photoElement.src = photoDataUrl;
-        photoElement.style.display = 'block';
+    async function capturePhoto() {
+      canvasElement.width = videoElement.videoWidth;
+      canvasElement.height = videoElement.videoHeight;
+      canvasElement.getContext('2d').drawImage(videoElement, 0, 0)
+      
+      const photoDataUrl = canvasElement.toDataURL('image/jpeg');
+      let byteString = atob(photoDataUrl.split(',')[1]);
+      let mimeString = photoDataUrl.split(',')[0].split(':')[1].split(';')[0]
+      let ab = new ArrayBuffer(byteString.length);
+      let ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+      }
+      let blob = new Blob([ab], {type: mimeString});
+
+      photoElement.src = photoDataUrl;
+      photoElement.style.display='block';
+      videoElement.style.display='none'
+      captureButton.innerHTML="Loading..."
+
+      const formData=new FormData();
+      formData.append('face', blob, `face-${Math.round(Math.random())}.jpg`)
+
+      let attempt=await axios({
+        url: "/",
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        data: formData
+      })
+      if(attempt.data.is_error){
+        alert("Wajah tidak cocok")
+        window.reload()
+      }
+      else {
+        const base_url = window.location.origin;
+        return window.location = base_url + "/guest"
+      }
     }
 
     captureButton.addEventListener('click', capturePhoto)

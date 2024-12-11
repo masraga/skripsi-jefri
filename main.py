@@ -7,6 +7,7 @@ from configs.upload_file import upload_file
 
 from controllers.user_controller import user_controller
 from controllers.admin_controller import admin_controller
+from controllers.guest_controller import guest_controller
 
 #load env
 load_dotenv()
@@ -38,6 +39,7 @@ db = db.connect()
 db.database = os.getenv("DB_NAME")
 new_user_controller = user_controller(db)
 new_admin_controller = admin_controller(db)
+new_guest_controller = guest_controller(db)
 
 #secret key
 app_secret = secrets.token_urlsafe(16)
@@ -47,7 +49,7 @@ app = Flask(__name__, template_folder=os.path.abspath("views"), static_folder=os
 app.secret_key = app_secret
 app.config['UPLOAD_FOLDER'] = "public/upload"
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/admin", methods=['GET', 'POST'])
 def login():
   return new_user_controller.login()
 
@@ -75,6 +77,13 @@ def save_user():
 def user_detail():
   return new_admin_controller.user("detail")
 
-@app.route("/guest/login", methods=['GET'])
+@app.route("/", methods=['GET', 'POST'])
 def guest_login():
   return new_user_controller.guest_login()
+
+@app.route("/guest", methods=['GET', 'POST'])
+def guest_dashboard():
+  return new_guest_controller.dashboard()
+
+if __name__ == "__main__":
+  app.run(host='0.0.0.0', port='5000', debug=True)

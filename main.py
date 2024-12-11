@@ -85,5 +85,9 @@ def guest_login():
 def guest_dashboard():
   return new_guest_controller.dashboard()
 
+@app.route("/guest/logout", methods=['GET', 'POST'])
+def guest_logout():
+  return new_guest_controller.logout()
+
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port='5000', debug=True)

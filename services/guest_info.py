@@ -34,3 +34,7 @@ class guest_info:
       overview_dict[o["month_year"]]=o["total"]
     
     return {"label": list(overview_dict.keys()), "value": list(map(str, list(overview_dict.values())))}
+  
+  def add_log(self, params={}):
+    new_guest_repo=guest_repo(self.db)
+    return new_guest_repo.add_log(params)

@@ -60,4 +60,4 @@ def face_predict(face):
     print(label_name)
     return {"face_id": recognizer["label_name"][label], "accuracy": conf, "is_error": is_error}
   else:
-    return False
+    return {"accuracy": 0, "is_error": True}

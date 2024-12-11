@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 class guest_repo:
 
   guest_table="guests"
@@ -72,3 +72,10 @@ class guest_repo:
     cursor.execute(query)
     result=cursor.fetchall()
     return result
+  
+  def add_log(self, params={}):
+    cursor=self.db.cursor()
+    query="INSERT INTO guest_log_history (guest_id, log, created_at, is_active, accuracy) VALUES (%s, %s, %s, %s, %s)"
+    query_value=(params["guest_id"], params["log"], datetime.now() , 1, params["accuracy"])
+    cursor.execute(query, query_value)
+    self.db.commit()

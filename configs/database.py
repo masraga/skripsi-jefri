@@ -62,6 +62,7 @@ class migration:
       self.user_table()['up'],
       self.guest_table()['up'],
       self.guest_face_table()['up'],
+      self.guest_history_login_table()['up'],
     ]
     for q in query:
       cursor.execute(q)
@@ -72,7 +73,8 @@ class migration:
     query = {
       self.user_table()['down'],
       self.guest_table()['down'],
-      self.guest_face_table()['down']
+      self.guest_face_table()['down'],
+      self.guest_history_login_table()['down'],
     }
     for q in query:
       self.db.cursor().execute(q)
@@ -113,6 +115,23 @@ class migration:
 
     down = """
       DROP TABLE IF EXISTS guest_faces;
+    """
+    return {"up": up, "down": down}
+  
+  def guest_history_login_table(self):
+    up = """
+      CREATE TABLE IF NOT EXISTS guest_log_history (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        guest_id INT,
+        accuracy FLOAT,
+        log TINYINT DEFAULT 1,
+        created_at DATETIME,
+        is_active TINYINT DEFAULT 1
+      );
+    """
+
+    down = """
+      DROP TABLE IF EXISTS guest_log_history;
     """
     return {"up": up, "down": down}
   

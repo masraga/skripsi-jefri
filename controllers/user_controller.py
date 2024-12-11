@@ -29,10 +29,11 @@ class user_controller:
         return render_template('index.html', label=overview['label'], value=overview['value'])
       else:
         flash(auth['msg'], 'danger')
-        return redirect("/")
+        return redirect("/admin")
   
   def logout(self):
-    logout_service.destroy_token()
+    l=logout_service(self.db)
+    l.destroy_token()
     return render_template('sign-in.html')
   
   def guest_login(self):
@@ -46,6 +47,7 @@ class user_controller:
       face.save(filename)
       predict=face_predict(filename)
       os.remove(filename)
+      print(predict)
       if predict["is_error"] is not True:
         guest_service=guest_info(self.db)
         guest=guest_service.get_list_guest({"face_id": predict['face_id']})
@@ -55,6 +57,8 @@ class user_controller:
         session["guest_token"]={
           "name": guest['name'],
           "face": os.path.join(face_path, face["face"]),
-          "accuracy": predict["accuracy"]
+          "accuracy": predict["accuracy"],
+          "guest_id": guest['id'],
         }
+        guest_service.add_log(params={"guest_id": guest["id"], "log": 1, "accuracy": predict["accuracy"]})
       return jsonify(predict)

@@ -1,4 +1,5 @@
-from flask import render_template
+from flask import render_template, redirect
+from services.user_manager import logout
 
 class guest_controller:
   db=None
@@ -7,3 +8,8 @@ class guest_controller:
   
   def dashboard(self):
     return render_template("guest.dashboard.html")
+  
+  def logout(self):
+    l=logout(self.db)
+    l.destroy_guest_token()
+    return redirect("/")

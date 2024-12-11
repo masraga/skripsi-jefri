@@ -3,6 +3,7 @@ import hashlib, random, string
 from flask import request, session, url_for
 from repositories.guest_repo import guest_repo
 from helpers.haar import crop_image
+from services.guest_info import guest_info
 
 class login:
   db=None
@@ -48,8 +49,18 @@ class login:
 pass  
 
 class logout:
+  db=None
+  def __init__(self, db):
+    self.db=db    
+
   def destroy_token():
     session.pop('token', None)
+    return True
+  
+  def destroy_guest_token(self):
+    guest_service=guest_info(self.db)
+    guest_service.add_log(params={"guest_id": session["guest_token"]["guest_id"], "log": 0, "accuracy": 100})
+    session.pop('guest_token', None)
     return True
   
 class user:

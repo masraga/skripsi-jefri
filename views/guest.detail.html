@@ -1,0 +1,16 @@
+{% extends "guest.base.html" %}
+{% block page_title %}{% endblock %}
+{% block content %}
+
+<div class="card">
+  <div class="body">
+    {% for log in logs %}
+      <h4>{{"LOGIN" if log['log'] == 1 else "LOGOUT"}}</h4>
+      <p>{{log['created_at'].strftime("%d-%m-%Y %H:%M:%S %p")}}</p>
+      <hr>
+      <br>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

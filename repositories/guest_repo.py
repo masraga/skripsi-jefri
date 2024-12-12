@@ -79,3 +79,14 @@ class guest_repo:
     query_value=(params["guest_id"], params["log"], datetime.now() , 1, params["accuracy"])
     cursor.execute(query, query_value)
     self.db.commit()
+
+  def get_log(self, params={}):
+    cursor=self.db.cursor(dictionary=True)
+    query="SELECT * FROM guest_log_history"
+    if len(params) > 0:
+      query += " WHERE "
+      if 'guest_id' in params:
+        query += f"guest_id={params['guest_id']}"
+    cursor.execute(query)
+    result=cursor.fetchall()
+    return result

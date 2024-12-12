@@ -6,8 +6,11 @@ class guest_info:
 
   db=None
 
+  guest_repo=None
+
   def __init__(self,db):
     self.db = db
+    self.guest_repo=guest_repo(db)
 
   def get_list_guest(self, params={}):
     new_guest_repo = guest_repo(self.db)
@@ -38,3 +41,6 @@ class guest_info:
   def add_log(self, params={}):
     new_guest_repo=guest_repo(self.db)
     return new_guest_repo.add_log(params)
+  
+  def get_log(self, params={}):
+    return self.guest_repo.get_log(params)

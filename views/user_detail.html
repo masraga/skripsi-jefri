@@ -40,6 +40,14 @@
           <th>Tanggal</th>
         </tr>
       </thead>
+      <tbody>
+        {% for log in logs %}
+          <tr>
+            <td><b>{{"LOGIN" if log['log']==1 else "LOGOUT"}}</b></td>
+            <td>{{log['created_at'].strftime("%d-%m-%Y %H:%M:%S %p")}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 </div>

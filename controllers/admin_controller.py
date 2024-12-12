@@ -43,4 +43,5 @@ class admin_controller:
         guest=guest_service.get_list_guest({"id": guest_id})
         guest=guest[0]
         faces=guest_service.get_list_face({"guest_id": guest_id})
-        return render_template("user_detail.html", faces=faces, guest=guest)
+        logs=guest_service.get_log(params={"guest_id": guest_id})
+        return render_template("user_detail.html", faces=faces, guest=guest, logs=logs)

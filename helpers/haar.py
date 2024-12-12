@@ -39,3 +39,8 @@ class crop_image:
         if face is not None:
           print(image)
           cv2.imwrite(os.path.join(self.face_path, image), face)
+
+def flip_image(filename):
+  img=cv2.imread(filename)
+  img=cv2.flip(img, 1)
+  return cv2.imwrite(filename, img)

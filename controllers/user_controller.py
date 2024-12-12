@@ -1,6 +1,7 @@
 import os
 from flask import request, render_template, session, redirect, flash, jsonify
 from helpers.lbp import face_predict
+from helpers.haar import flip_image
 from services.guest_info import guest_info
 from services.user_manager import (
   login as login_service,
@@ -40,11 +41,12 @@ class user_controller:
     if len(request.files.getlist('face')) == 0:
       return render_template('sign_in_guest.html')
     else: 
-      upload_path="public/attempt"
-      face_path="public/upload"
+      upload_path="public\\attempt"
+      face_path="public\\upload"
       face=request.files.getlist("face")[0]
       filename=os.path.join(upload_path, face.filename)
       face.save(filename)
+      flip_image(filename)
       predict=face_predict(filename)
       os.remove(filename)
       print(predict)

@@ -11,13 +11,13 @@ class admin_controller:
     self.db = db
 
   def dashboard(self):
-    # if not is_auth_admin(): return redirect_admin_login()
+    if not is_auth_admin(): return redirect_admin_login()
     guest_service=guest_info(self.db)
     overview=guest_service.get_yearly_user_total()
     return render_template("index.html", label=overview["label"], value=overview["value"])
 
   def user(self, path=None):
-    # if not is_auth_admin(): return redirect_admin_login() 
+    if not is_auth_admin(): return redirect_admin_login() 
     guest_service=guest_info(self.db)
     if path == None:
       guest_list=guest_service.get_list_guest()

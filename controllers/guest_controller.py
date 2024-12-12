@@ -1,6 +1,7 @@
 from flask import render_template, redirect
 from services.user_manager import logout
 from services.guest_info import guest_info
+from helpers.auth_helper import is_auth_guest, redirect_guest_login
 
 class guest_controller:
   db=None
@@ -12,6 +13,7 @@ class guest_controller:
     self.guest_info_service = guest_info(db)
   
   def dashboard(self):
+    if not is_auth_guest(): return redirect_guest_login() 
     return render_template("guest.dashboard.html")
   
   def logout(self):
@@ -20,6 +22,7 @@ class guest_controller:
     return redirect("/")
   
   def guest_detail(self, id):
+    if not is_auth_guest(): return redirect_guest_login() 
     guest=self.guest_info_service.get_list_guest(params={"id": id})
     if len(guest) == 0:
       return "User tidak ditemukan"

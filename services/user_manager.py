@@ -53,7 +53,7 @@ class logout:
   def __init__(self, db):
     self.db=db    
 
-  def destroy_token():
+  def destroy_token(self):
     session.pop('token', None)
     return True
   

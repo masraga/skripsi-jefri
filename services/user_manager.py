@@ -108,7 +108,7 @@ class user:
     self.guest_repo.create(payload["username"], payload["faces"], payload['face_id'], payload['gender'])    
 
     # crop gambar untuk mendapatkan data wajah
-    crop_image()
+    # crop_image()
 
     result = {"is_error": False, "msg": "Data user berhasil disimpan", "msg_type": "success"}
     return result

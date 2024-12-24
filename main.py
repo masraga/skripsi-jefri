@@ -93,5 +93,9 @@ def guest_logout():
 def guest_detail(id):
   return new_guest_controller.guest_detail(id)
 
+@app.route("/admin/user/delete", methods=['GET'])
+def delete_guest():
+  return new_admin_controller.delete_user()
+
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port='5000', debug=True)

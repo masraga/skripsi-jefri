@@ -1,3 +1,4 @@
+import os
 from datetime import date, datetime
 class guest_repo:
 
@@ -33,9 +34,9 @@ class guest_repo:
 
   def get_list(self, params={}):
     cursor = self.db.cursor(dictionary=True)
-    query ="SELECT * FROM guests"
+    query ="SELECT * FROM guests WHERE is_active=1"
     if len(params) > 0:
-      query += " WHERE "
+      query += " AND "
       if 'id' in params:
         query += f"id={params['id']}"
       if 'face_id' in params:
@@ -66,6 +67,8 @@ class guest_repo:
         sum(1) as total
       FROM 
         guests 
+      WHERE
+        is_active=1
       GROUP BY month_year
       ORDER BY created_at ASC
     """
@@ -90,3 +93,15 @@ class guest_repo:
     cursor.execute(query)
     result=cursor.fetchall()
     return result
+
+  def delete_user(self, params={}):
+    cursor=self.db.cursor()
+    id=params['id']
+    faces=self.get_list_face(params={"guest_id":id})
+    for face in faces:
+      print('[log] delete file', face['face'])
+      os.remove(os.path.join("public/upload/", face['face']))
+    query="UPDATE guests SET is_active=%s WHERE id=%s"
+    val=("0",id)
+    cursor.execute(query, val)
+    self.db.commit()

@@ -112,3 +112,6 @@ class user:
 
     result = {"is_error": False, "msg": "Data user berhasil disimpan", "msg_type": "success"}
     return result
+  
+  def delete(self, id):
+    return self.guest_repo.delete_user(params={"id": id})

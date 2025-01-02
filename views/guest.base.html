@@ -41,11 +41,16 @@
       right: 0;
       width: 100%;
       bottom: 0;
+      overflow: hidden;
+      justify-content: space-between;
     }
-    .footer>a{
+    .footer>div{
       width: 100%;
-      display: flex;
       justify-content: center;
+      display: flex;
+    }
+    .footer>div>a{
+      display: block;
     }
   </style>
 </head>
@@ -105,9 +110,11 @@
   </section>
 
   <div class="footer">
-    <a href="/guest/detail/{{session['guest_token']['guest_id']}}" class="col-red"><i class="material-icons">person</i></a>
-    <a href="/guest" class="col-red"><i class="material-icons">home</i></a>
-    <a href="/guest/logout" class="col-red"><i class="material-icons">logout</i></a>
+    <div>
+      <div><a href="/guest/detail/{{session['guest_token']['guest_id']}}" class="col-red"><i class="material-icons">person</i></a><div>detail</div></div>
+    </div>
+    <div><div><a href="/guest" class="col-red"><i class="material-icons">home</i></a><div>Dashboard</div></div></div>
+    <div><div><a href="/guest/logout" class="col-red"><i class="material-icons">logout</i></a><div>Keluar</div></div></div>
   </div>
 
   <!-- Jquery Core Js -->
